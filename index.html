@@ -6,7 +6,12 @@
   <title>The Perfect Surprise Final</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet" />
   <style>
-    /* ================= GLOBAL SETUP ================= */
+    /* ================= จุดที่เพิ่มเพื่อให้ปรับสัดส่วนได้ ================= */
+    body {
+      touch-action: manipulation; /* ป้องกันการซูมมั่วซั่วในมือถือ */
+    }
+    /* ========================================================== */
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; }
     body { 
       width: 100vw; height: 100vh; background: #fff0f5; 
@@ -44,7 +49,6 @@
 
     .title { font-size: 1.5em; color: #ff69b4; margin-bottom: 16px; }
 
-    /* ================= SCREEN 1 ELEMENTS ================= */
     .image-frame { 
       width: 60vmin; height: 32vmin; border-radius: 16px; 
       background: #ffeef7; border: 2px dashed #ff9ac1; 
@@ -78,24 +82,12 @@
     
     #exitBtn { background: #ff4444; position: relative; z-index: 100; transition: left 0.4s cubic-bezier(0.2, 1, 0.3, 1), top 0.4s cubic-bezier(0.2, 1, 0.3, 1), transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.4s ease; will-change: left, top, transform; }
 
-    /* ================= SCREEN 2 ELEMENTS ================= */
     .top-frame { 
-      position: absolute; 
-      top: 70px; 
-      left: 80%; 
-      transform: translateX(-50%); 
-      width: 250px; 
-      height: 50px; 
-      border: 2px solid #ffa0c5; 
-      background: #fffafc; 
-      border-radius: 12px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      color: #ff69b4; 
-      font-weight: bold; 
-      z-index: 1; 
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      position: absolute; top: 70px; left: 80%; transform: translateX(-50%); 
+      width: 250px; height: 50px; border: 2px solid #ffa0c5; 
+      background: #fffafc; border-radius: 12px; display: flex; 
+      align-items: center; justify-content: center; color: #ff69b4; font-weight: bold; 
+      z-index: 1; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     }
     .top-frame:hover { transform: translateX(-50%) scale(1.1) rotate(2deg); border-style: solid; border-color: #ff69b4; }
 
@@ -109,126 +101,60 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
     .message-box { 
-      width: 80%; 
-      height: 75%; 
-      margin-top: 140px; 
-      margin-bottom: 20px; 
-      background: #ffeef7; 
-      border: 2px solid #ff9ac1; 
-      border-radius: 16px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      overflow: hidden; 
-      padding: 15px;
+      width: 80%; height: 75%; margin-top: 140px; margin-bottom: 20px; 
+      background: #ffeef7; border: 2px solid #ff9ac1; border-radius: 16px; 
+      display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 15px;
     }
 
     .content-img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      border-radius: 10px;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      transform: translateZ(0); 
+      max-width: 90%; max-height: 90%; object-fit: contain; transition: transform 0.3s ease, filter 0.3s ease;
+      border-radius: 10px; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: translateZ(0); 
     }
+    .content-img:hover { transform: scale(1.05); filter: brightness(1.05); } 
 
-    .content-img:hover {
-      transform: scale(1.05);
-      filter: brightness(1.05);
-    } 
-
-    /* ================= SCREEN 3 ELEMENTS (แก้ไขรอยขาดและการซูม) ================= */
     .envelope-container-click { 
-      position: relative; 
-      width: 200px; 
-      height: 150px; 
-      cursor: pointer;
-      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 5;
+      position: relative; width: 200px; height: 150px; cursor: pointer;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 5;
     }
     .envelope-container-click.zoom { transform: scale(1.2); }
 
     .mail { position: absolute; width: 200px; height: 150px; bottom: 0; }
-    /* ปรับ back-fold ให้เชื่อมรอยต่อดีขึ้น */
     .mail .back-fold { position: absolute; width: 200px; height: 102px; background: #cf4a43; bottom: 0; z-index: 0; border-radius: 0 0 8px 8px; }
     .mail .body { position: absolute; width: 0; height: 0; border-style: solid; border-width: 0 0 100px 200px; border-color: transparent transparent #e95f66 transparent; bottom: 0; z-index: 2; }
     .mail .left-fold { position: absolute; bottom: 0; width: 0; height: 0; border-style: solid; border-width: 50px 0 50px 102px; border-color: transparent transparent transparent #e15349; z-index: 2; }
     
-    /* แก้ไขรอยขาด: top-fold */
     .mail .top-fold { 
-  position: absolute; 
-  width: 0; 
-  height: 0; 
-  border-style: solid; 
-  border-width: 52px 100px 0 100px; /* เพิ่มความหนาขอบนิดนึงเพื่อปิดรอยขาด */
-  border-color: #cf4a43 transparent transparent transparent; 
-  top: 48.5px; 
-  transform-origin: top; 
-  z-index: 3; /* ให้ทับจดหมายเสมอตอนจดหมายอยู่ในซอง */
-  transition: transform 0.6s ease, z-index 0.2s; /* จังหวะสลับเลเยอร์ต้องเร็ว */
-}
- 
-/* เจาะจงเฉพาะปุ่ม NEXT ในหน้า 2 */
-#nextBtn2 {
-    padding: 15px 40px;    /* ปรับความห่างขอบ (ตัวแรกคือ บน-ล่าง, ตัวหลังคือ ซ้าย-ขวา) */
-    font-size: 1.2em;      /* ปรับขนาดตัวอักษร (1.5em คือใหญ่ขึ้น 1.5 เท่า) */
-    width: auto;           /* หรือจะกำหนดความกว้างตายตัว เช่น 250px */
-    margin-top: 1px;      /* ระยะห่างจากกล่องข้อความด้านบน */
-}
-/* ตอนเปิดซอง */
-.envelope-container-click.open .top-fold { 
-  transform: rotateX(180deg); 
-  z-index: 0; /* เปิดแล้วย้ายไปข้างหลังเพื่อไม่ให้บังจดหมายตอนลอย */
-}
+      position: absolute; width: 0; height: 0; border-style: solid; border-width: 52px 100px 0 100px;
+      border-color: #cf4a43 transparent transparent transparent; top: 48.5px; transform-origin: top; 
+      z-index: 3; transition: transform 0.6s ease, z-index 0.2s; 
+    }
+
+    #nextBtn2 { padding: 15px 40px; font-size: 1.2em; width: auto; margin-top: 1px; }
+
+    .envelope-container-click.open .top-fold { transform: rotateX(180deg); z-index: 0; }
     
     .mail .letter {
-  position: absolute; 
-  left: 50%; 
-  transform: translateX(-50%) translateZ(0); /* เพิ่ม translateZ(0) เพื่อช่วยเรื่องความชัด */
-  bottom: 10px; 
-  width: 90%; 
-  height: 0; 
-  background: white; 
-  z-index: 1; 
-  overflow: hidden; 
-  border-radius: 8px; 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: height 0.6s ease, bottom 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  
-  
-  /* --- เพิ่ม 3 บรรทัดนี้เพื่อแก้เบลอ --- */
-  image-rendering: -webkit-optimize-contrast; /* สำหรับ Chrome/Safari */
-  backface-visibility: hidden; 
-  -webkit-font-smoothing: antialiased;
-}
+      position: absolute; left: 50%; transform: translateX(-50%) translateZ(0); bottom: 10px; 
+      width: 90%; height: 0; background: white; z-index: 1; overflow: hidden; border-radius: 8px; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: height 0.6s ease, bottom 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      image-rendering: -webkit-optimize-contrast; backface-visibility: hidden; -webkit-font-smoothing: antialiased;
+    }
     .letter img { width: 100%; height: auto; display: block; }
 
-    /* แก้ลำดับเลเยอร์ตอนเปิด */
-    .envelope-container-click.open .top-fold { 
-      transform: rotateX(180deg); 
-      z-index: 0; /* ย้ายฝาไปข้างหลังจดหมาย */
-    }
     .envelope-container-click.open .letter { height: 100px; bottom: 30px; }
-    
     .letter.floating { bottom: 100px !important; }
-    
-    /* ปรับ Scale ลงมาเหลือ 2.5 เพื่อไม่ให้ล้นหน้าจอและรูปไม่เบลอมาก */
-    .letter.zoomed { 
-      transform: translateX(-50%) translateY(8vh) scale(3) !important; 
-      z-index: 1000; 
-      box-shadow: 0 10px 50px rgba(0,0,0,0.3); 
-    }
+    .letter.zoomed { transform: translateX(-50%) translateY(8vh) scale(3) !important; z-index: 1000; box-shadow: 0 10px 50px rgba(0,0,0,0.3); }
 
+    /* หัวใจแอนิเมชันตอนเปิดซอง (มึงเอาแบบเดิมเป๊ะ) */
     .heart1, .heart2, .heart3 { position: absolute; transform: rotate(45deg); animation: flyHeart 2.8s ease-out forwards; z-index: 10; }
     .heart1 { width: 10px; height: 10px; background: radial-gradient(circle at 30% 30%, #ffc0cb, #ff69b4); border-radius: 5px 5px 10px 10px; }
     .heart1::before, .heart1::after { content: ''; position: absolute; width: 100%; height: 100%; background: inherit; border-radius: 50%; }
     .heart1::before { top: -50%; left: 0; } .heart1::after { top: 0; left: -50%; }
-    /* ... (ส่วนหัวใจอื่นๆ เหมือนเดิม) ... */
+    
     .heart2 { width: 12px; height: 12px; background: linear-gradient(135deg, #ff8da1, #ff416c); border-radius: 50%; }
     .heart2::before, .heart2::after { content: ''; position: absolute; width: 100%; height: 100%; background: inherit; border-radius: 50%; }
     .heart2::before { top: -50%; left: 0; } .heart2::after { top: 0; left: -50%; }
+    
     .heart3 { width: 8px; height: 8px; background: radial-gradient(circle at 30% 30%, #ffb6c1, #e75480); border-radius: 50%; }
     .heart3::before, .heart3::after { content: ''; position: absolute; width: 100%; height: 100%; background: inherit; border-radius: 50%; }
     .heart3::before { top: -50%; left: 0; } .heart3::after { top: 0; left: -50%; }
@@ -261,7 +187,6 @@
       </div>
       <button id="nextBtn2" onclick="showEnvelope()" disabled>NEXT SURPRISE</button>
     </div>
-    
 
     <div id="envelopeScreen" class="screen" style="justify-content: center;">
       <div id="envelopeClick" class="envelope-container-click">
@@ -278,7 +203,25 @@
   </div>
 
   <script>
-    // --- Background Hearts เหมือนเดิม ---
+    // --- จุดที่เพิ่ม: ฟังก์ชันปรับสเกลอัตโนมัติเพื่อให้หน้าตาเหมือนกันทุกจอ ---
+    function autoResize() {
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      
+      // อ้างอิงขนาดที่มึงเขียน (90vmin x 55vmin)
+      // ถ้าเปิดในที่แคบมากๆ (เช่น มือถือแนวตั้ง) เราจะสั่งซูมออก
+      if (windowWidth < windowHeight) {
+        // คำนวณอัตราส่วนการย่อ (เพื่อให้กล่องกว้าง 90% ของหน้าจอ)
+        const scale = windowWidth / (windowWidth * 1.1); 
+        document.body.style.zoom = scale;
+      } else {
+        document.body.style.zoom = "1";
+      }
+    }
+    window.addEventListener('load', autoResize);
+    window.addEventListener('resize', autoResize);
+    // -----------------------------------------------------------
+
     function createBackgroundHeart() {
       const heart = document.createElement('div');
       heart.className = 'bg-heart';
@@ -298,7 +241,6 @@
     }
     setInterval(createBackgroundHeart, 1500);
 
-    // --- Logic หน้า 1 & 2 เหมือนเดิม ---
     let exitClickCount = 0;
     const exitBtn = document.getElementById('exitBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -306,9 +248,8 @@
     
     exitBtn.addEventListener('click', () => {
       exitClickCount++;
-      if (exitClickCount >= 4) {
-        exitBtn.style.display = 'none';
-      } else {
+      if (exitClickCount >= 4) { exitBtn.style.display = 'none'; } 
+      else {
         exitBtn.style.transform = `scale(${1 - exitClickCount * 0.2})`;
         nextBtn.style.setProperty('--base-scale', 1 + exitClickCount * 0.3);
         const rect = screen1.getBoundingClientRect();
@@ -319,8 +260,7 @@
     });
 
     function startCountdown() {
-      nextBtn.disabled = true;
-      exitBtn.style.display = 'none'; 
+      nextBtn.disabled = true; exitBtn.style.display = 'none'; 
       const countdownEl = document.getElementById('countdown');
       let seconds = 5;
       const interval = setInterval(() => {
@@ -347,7 +287,6 @@
       document.getElementById('envelopeScreen').classList.add('active');
     }
 
-    // --- Logic หน้า 3 ปรับปรุงเรื่องความสมูท ---
     let envelopeOpened = false;
     let isTransitioning = false;
     const envelopeClick = document.getElementById('envelopeClick');
@@ -355,7 +294,6 @@
 
     envelopeClick.addEventListener('click', () => {
       if (isTransitioning) return;
-      
       if (!envelopeOpened) {
         isTransitioning = true;
         envelopeClick.classList.add('zoom');
@@ -373,7 +311,6 @@
             letter.classList.add('zoomed');
             isTransitioning = false;
           }, 600);
-       
         }
       }
     });
@@ -385,12 +322,11 @@
         setTimeout(() => {
           const heart = document.createElement('div');
           heart.className = heartTypes[i % 3];
-          heart.style.left = '100px';
-          heart.style.top = '70px';
+          heart.style.left = '100px'; heart.style.top = '70px';
           heart.style.setProperty('--dx', (Math.random() - 0.5) * 250 + 'px');
           heart.style.setProperty('--dy', -(150 + Math.random() * 100) + 'px');
           heartContainer.appendChild(heart);
-          setTimeout(() =>  heart.remove(), 3000);
+          setTimeout(() => heart.remove(), 3000);
         }, i * 150);
       }
     }
